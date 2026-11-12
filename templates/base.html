@@ -7,6 +7,7 @@
   <title>{% block title %}ClientHub{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
@@ -37,7 +38,10 @@
         <span>Estadísticas</span>
       </a>
     </nav>
-
+    <figure class="sidebar-photo">
+      <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&amp;fit=crop&amp;w=600&amp;q=80" alt="" loading="lazy">
+      <figcaption><span>CONEXIONES REALES</span><strong>Crecer también es escuchar.</strong></figcaption>
+    </figure>
   </aside>
 
   <main class="main-area">
@@ -81,7 +85,7 @@
         {% endif %}
       {% endwith %}
       {% block content %}{% endblock %}
-      <footer class="page-footer"><span>ClientHub <span class="footer-dot">·</span> Gestión inteligente de clientes</span><span>Flask <span class="footer-dot">·</span> SQLite</span></footer>
+      <footer class="page-footer"><span>ClientHub <span class="footer-dot">·</span> Gestión inteligente de clientes</span><span>Flask <span class="footer-dot">·</span> SQLite / Neon</span></footer>
     </div>
   </main>
   <script src="{{ url_for('static', filename='app.js') }}" defer></script>

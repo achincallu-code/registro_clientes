@@ -7,6 +7,7 @@
   <title>{% block title %}Acceso | ClientHub{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
@@ -17,10 +18,15 @@
         <span class="brand-mark" aria-hidden="true">C</span>
         <span class="brand-copy">Client<span>Hub</span><small>GESTIÓN DE CLIENTES</small></span>
       </a>
-      <span class="auth-kicker">RELACIONES QUE CRECEN</span>
-      <h1>Un buen negocio<br>empieza con<br><em>conocer a la gente.</em></h1>
-      <p>Un espacio tranquilo y organizado para cuidar cada relación con tus clientes.</p>
-      <span class="auth-decoration" aria-hidden="true"><span></span><span></span><span></span></span>
+      <div class="auth-copy">
+        <span class="auth-kicker">RELACIONES QUE CRECEN</span>
+        <h1>Un buen negocio<br>empieza con<br><em>conocer a la gente.</em></h1>
+        <p>Un espacio tranquilo y organizado para cuidar cada relación con tus clientes.</p>
+      </div>
+      <figure class="auth-photo">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="" fetchpriority="high">
+        <figcaption>Personas primero. Relaciones que crecen.</figcaption>
+      </figure>
       <small class="auth-aside-footer">Tu información permanece en tu base de datos local.</small>
     </section>
     <section class="auth-main">
