@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: clienthub
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 app:app
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: CLIENTHUB_SECRET_KEY
+        generateValue: true
+      - key: CLIENTHUB_SECURE_COOKIE
+        value: "1"

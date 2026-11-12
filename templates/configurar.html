@@ -1,0 +1,30 @@
+{% extends "auth_base.html" %}
+{% block title %}Configurar administrador | ClientHub{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <span class="auth-step">PRIMEROS PASOS <span>01 / 01</span></span>
+  <span class="auth-icon">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 20 7v5.5c0 4.6-3.2 7.3-8 9-4.8-1.7-8-4.4-8-9V7l8-3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.5 12 2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </span>
+  <span class="eyebrow">CONFIGURACIÓN SEGURA</span>
+  <h2>Crea tu acceso</h2>
+  <p class="auth-description">Elige las credenciales del administrador para proteger el directorio de clientes.</p>
+  <form method="POST" class="auth-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="field"><span class="field-label">Usuario administrador</span><span class="field-control">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c.7-3.5 3-5.3 7-5.3s6.3 1.8 7 5.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <input name="usuario" autocomplete="username" minlength="3" maxlength="40" placeholder="Ej. admin" required autofocus>
+    </span></label>
+    <label class="field"><span class="field-label">Contraseña <span class="required-mark">*</span></span><span class="field-control">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4.5" y="10" width="15" height="11" rx="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <input type="password" name="contrasena" autocomplete="new-password" minlength="12" placeholder="Mínimo 12 caracteres" required>
+    </span></label>
+    <label class="field"><span class="field-label">Confirma tu contraseña</span><span class="field-control">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4.5" y="10" width="15" height="11" rx="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <input type="password" name="confirmar" autocomplete="new-password" minlength="12" placeholder="Escribe de nuevo tu contraseña" required>
+    </span></label>
+    <button class="button button-primary auth-submit" type="submit">Crear administrador <span aria-hidden="true">→</span></button>
+  </form>
+  <p class="auth-hint">Tu contraseña se guarda cifrada; no se almacena como texto legible.</p>
+</div>
+{% endblock %}

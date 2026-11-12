@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff9ee">
+  <title>{% block title %}ClientHub{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+  <button class="sidebar-backdrop" type="button" aria-label="Cerrar menú" data-sidebar-close></button>
+  <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+    <a class="brand" href="{{ url_for('inicio') }}" aria-label="ClientHub, inicio">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-copy">Client<span>Hub</span><small>GESTIÓN DE CLIENTES</small></span>
+    </a>
+
+    <span class="nav-caption">ESPACIO DE TRABAJO</span>
+    <nav class="side-nav">
+      <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('inicio') }}" {% if request.path == '/' %}aria-current="page"{% endif %}>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg>
+        <span>Inicio</span>
+      </a>
+      <a class="nav-link" href="{{ url_for('inicio') }}#registro">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 19c.6-3 2.4-4.5 5.5-4.5 1.4 0 2.6.4 3.5 1.1M17.5 10v7m-3.5-3.5h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span>Registrar cliente</span>
+      </a>
+      <a class="nav-link {% if request.path == '/clientes' %}active{% endif %}" href="{{ url_for('clientes') }}" {% if request.path == '/clientes' %}aria-current="page"{% endif %}>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="2" stroke="currentColor" stroke-width="1.6"/><path d="M5.7 16c.4-1.6 1.5-2.4 3.3-2.4s2.9.8 3.3 2.4m2.2-5h3m-3 3h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>Directorio</span>
+      </a>
+      <a class="nav-link {% if request.path == '/estadisticas' %}active{% endif %}" href="{{ url_for('estadisticas') }}" {% if request.path == '/estadisticas' %}aria-current="page"{% endif %}>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5h16M6.5 16v-4m5 4V6m5 10V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="6.5" cy="9" r="1" fill="currentColor"/><circle cx="11.5" cy="4" r="1" fill="currentColor"/><circle cx="16.5" cy="7" r="1" fill="currentColor"/></svg>
+        <span>Estadísticas</span>
+      </a>
+    </nav>
+
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar" data-sidebar-toggle>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <span class="breadcrumb">ClientHub <span>/</span> {% block breadcrumb %}Inicio{% endblock %}</span>
+      </div>
+      <div class="topbar-right">
+        <span class="live-status"><span></span> Sistema operativo</span>
+        <span class="topbar-divider"></span>
+        <div class="date-display">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 3.5v3M16.5 3.5v3M3.5 9.5h17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span data-current-date></span>
+        </div>
+        <span class="topbar-divider account-divider"></span>
+        <span class="admin-label">{{ admin_usuario }}</span>
+        <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="logout-button" type="submit" title="Cerrar sesión" aria-label="Cerrar sesión">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 4H5.5A1.5 1.5 0 0 0 4 5.5v13A1.5 1.5 0 0 0 5.5 20H10m4-4 4-4-4-4m4 4H9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+      </div>
+    </header>
+
+    <div class="page-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-stack" role="status" aria-live="polite">
+            {% for category, message in messages %}
+              <div class="alert {{ category }}">
+                <span class="alert-symbol" aria-hidden="true">{% if category == 'success' %}✓{% else %}!{% endif %}</span>
+                <span>{{ message }}</span>
+                <button class="alert-dismiss" type="button" aria-label="Cerrar aviso">×</button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+      <footer class="page-footer"><span>ClientHub <span class="footer-dot">·</span> Gestión inteligente de clientes</span><span>Flask <span class="footer-dot">·</span> SQLite</span></footer>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>

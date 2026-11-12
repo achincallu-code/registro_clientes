@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Directorio | ClientHub{% endblock %}
+{% block breadcrumb %}Directorio{% endblock %}
+{% block content %}
+<section class="page-intro directory-intro">
+  <div>
+    <span class="eyebrow"><span class="eyebrow-line"></span> TU RED, SIEMPRE CERCA</span>
+    <h1>Directorio de clientes</h1>
+    <p>Un vistazo a cada persona que forma parte de tu negocio.</p>
+  </div>
+  <a class="button button-primary" href="{{ url_for('inicio') }}#registro">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    Agregar cliente
+  </a>
+</section>
+
+<section class="directory-toolbar">
+  <form method="GET" action="{{ url_for('clientes') }}" class="directory-search" role="search" data-directory-search-form>
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <input type="search" name="q" value="{{ busqueda }}" placeholder="Busca por nombre o teléfono..." aria-label="Buscar clientes por nombre o teléfono" data-directory-search>
+    {% if busqueda %}<a class="clear-search" href="{{ url_for('clientes') }}" aria-label="Limpiar búsqueda">×</a>{% endif %}
+    <button class="button button-primary search-button" type="submit">Buscar</button>
+  </form>
+  <div class="directory-tools">
+    <span class="directory-count"><strong>{{ total }}</strong><small>clientes</small></span>
+    <a class="export-link" href="{{ url_for('exportar_excel') }}" title="Descargar archivo de Excel">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 3.5h5.5A1.5 1.5 0 0 1 20 5v14a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V5a1.5 1.5 0 0 1 1.5-1.5H8m5 0V8h7M8 11l4 6m0-6-4 6m5-4h5m-5 3h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Excel
+    </a>
+    <a class="export-link export-pdf" href="{{ url_for('exportar_pdf') }}" title="Descargar archivo PDF">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 3.5h5.5A1.5 1.5 0 0 1 20 5v14a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V5a1.5 1.5 0 0 1 1.5-1.5H8m5 0V8h7M8 12h8m-8 3h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      PDF
+    </a>
+  </div>
+</section>
+
+<section class="directory-section">
+  <div class="directory-heading">
+    <div><h2>Todos los clientes</h2><p><span data-visible-count>{{ registros|length }}</span> <span data-count-label>{% if registros|length == 1 %}persona{% else %}personas{% endif %}</span> en esta vista</p></div>
+    <span class="directory-total"><span></span> Directorio actualizado</span>
+  </div>
+  {% if registros %}
+    <div class="table-shell">
+      <div class="table-scroll">
+        <table class="client-table">
+          <thead><tr><th>CLIENTE</th><th>CONTACTO</th><th>DIRECCIÓN</th><th>FECHA DE REGISTRO</th><th>ACCIONES</th></tr></thead>
+          <tbody>
+            {% for c in registros %}
+              <tr data-contact-card data-search="{{ c.nombre }} {{ c.telefono }}">
+                <td>
+                  <span class="table-client">
+                    <span class="contact-avatar avatar-color-{{ loop.index }}">
+                      {% if c.foto %}<img src="{{ url_for('foto_cliente', nombre=c.foto) }}" alt="" loading="lazy">{% else %}{{ c.nombre[0]|upper }}{% endif %}
+                    </span>
+                    <span><strong>{{ c.nombre }}</strong><small>{{ c.correo }}</small></span>
+                  </span>
+                </td>
+                <td><a class="table-phone" href="tel:{{ c.telefono }}">{{ c.telefono }}</a></td>
+                <td class="table-address">{{ c.direccion }}</td>
+                <td><span class="table-date">{{ c.fecha_registro[:10] if c.fecha_registro else '—' }}</span></td>
+                <td>
+                  <span class="table-actions">
+                    <a class="table-action edit-action" href="{{ url_for('editar', cliente_id=c.id) }}" title="Editar a {{ c.nombre }}" aria-label="Editar a {{ c.nombre }}">
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m14 5 5 5M4 20l4.3-.9L19 8.4a2.1 2.1 0 0 0-3-3L5.3 16.1 4 20Zm8-15H5a1.5 1.5 0 0 0-1.5 1.5v12A1.5 1.5 0 0 0 5 20h12a1.5 1.5 0 0 0 1.5-1.5V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <form method="POST" action="{{ url_for('eliminar', cliente_id=c.id) }}" data-confirm-delete data-client-name="{{ c.nombre }}">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                      <button class="table-action delete-action" type="submit" title="Eliminar a {{ c.nombre }}" aria-label="Eliminar a {{ c.nombre }}">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 7h15m-13.5 0 1 13h10l1-13M9 7V4h6v3m-5 4v5m4-5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                    </form>
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+            <tr class="table-empty-row" data-live-empty hidden><td colspan="5"><span class="empty-state"><span class="empty-icon">⌕</span><span><strong>No encontramos coincidencias</strong><small>Prueba con otro nombre o número.</small></span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="surface empty-state directory-empty">
+      <span class="empty-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c.6-3 2.4-4.5 5.5-4.5s4.9 1.5 5.5 4.5m3-8h5m-2.5-2.5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+      <span><strong>{% if busqueda %}No encontramos coincidencias{% else %}Tu directorio empieza aquí{% endif %}</strong><small>{% if busqueda %}Prueba otra búsqueda o limpia el filtro.{% else %}Añade tu primer cliente para comenzar a organizar tus contactos.{% endif %}</small></span>
+      {% if busqueda %}<a class="button button-secondary" href="{{ url_for('clientes') }}">Limpiar búsqueda</a>{% else %}<a class="button button-primary" href="{{ url_for('inicio') }}#registro">Agregar primer cliente <span aria-hidden="true">→</span></a>{% endif %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
